@@ -18,11 +18,6 @@ public class UploadController {
         this.s3Service = s3Service;
     }
 
-    @GetMapping(value = "/test")
-    public ResponseEntity<String> test() {
-        return new ResponseEntity<>("test api", HttpStatus.OK);
-    }
-
     @PostMapping(value = "/uploadImage")
     public ResponseEntity<String> createPost(@RequestParam(required = false) MultipartFile file) {
 //        String medias = s3Service.uploadFile(file);
