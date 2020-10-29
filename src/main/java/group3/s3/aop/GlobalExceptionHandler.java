@@ -16,9 +16,12 @@ import org.springframework.web.multipart.MultipartException;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    @Autowired
     private MessageSource messageSource;
 
+    @Autowired
+    public GlobalExceptionHandler(MessageSource messageSource) {
+        this.messageSource = messageSource;
+    }
 
     @ExceptionHandler(MultipartException.class)
     public ResponseEntity<ResponseError> handleMultipartException(Exception ex) {
