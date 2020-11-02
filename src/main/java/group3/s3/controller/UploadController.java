@@ -38,7 +38,7 @@ public class UploadController {
         //        String medias = s3Service.uploadFile(file);
         //        return new ResponseEntity<>(medias, HttpStatus.OK);
         String error = fileValidator.validate(file);
-        if (error.length() > 0) {
+        if (error != null && error.length() > 0) {
             return new ResponseEntity<>(ResponseError.builder().error(error).build(), HttpStatus.UNSUPPORTED_MEDIA_TYPE);
         }
         String dummy = "https://elasticbeanstalk-us-west-1-425277212426.s3.amazonaws.com/group3-image/file260275551504320";
