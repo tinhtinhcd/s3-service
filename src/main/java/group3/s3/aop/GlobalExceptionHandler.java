@@ -4,6 +4,7 @@ import group3.s3.entity.ResponseError;
 import org.apache.tomcat.util.http.fileupload.impl.FileSizeLimitExceededException;
 import org.apache.tomcat.util.http.fileupload.impl.SizeLimitExceededException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,9 @@ public class GlobalExceptionHandler {
 
     private MessageSource messageSource;
 
+    @Value("${spring.servlet.multipart.max-file-size}")
+    private String size;
+
     @Autowired
     public GlobalExceptionHandler(MessageSource messageSource) {
         this.messageSource = messageSource;
@@ -29,15 +33,14 @@ public class GlobalExceptionHandler {
         if(ex instanceof MaxUploadSizeExceededException){
             String message = messageSource.getMessage(
                     "file.maxsize",
-                    new Object[]{((FileSizeLimitExceededException)se).getFieldName(),
-                            ((MaxUploadSizeExceededException) ex).getMaxUploadSize()},
+                    new Object[]{"File uploaded ", size},
                     LocaleContextHolder.getLocale());
-            return new ResponseEntity<>(ResponseError.builder().message(message).build(), HttpStatus.PAYLOAD_TOO_LARGE);
+            return new ResponseEntity<>(ResponseError.builder().error(message).build(), HttpStatus.PAYLOAD_TOO_LARGE);
         }
         else if (se instanceof SizeLimitExceededException){
-            return new ResponseEntity<>(ResponseError.builder().message(se.getMessage()).build(), HttpStatus.PAYLOAD_TOO_LARGE);
+            return new ResponseEntity<>(ResponseError.builder().error(se.getMessage()).build(), HttpStatus.PAYLOAD_TOO_LARGE);
         }
-        return new ResponseEntity<>(ResponseError.builder().message(ex.getMessage()).build(), HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(ResponseError.builder().error(ex.getMessage()).build(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 }
