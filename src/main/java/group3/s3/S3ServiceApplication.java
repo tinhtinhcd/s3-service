@@ -14,10 +14,4 @@ public class S3ServiceApplication {
 		SpringApplication.run(S3ServiceApplication.class, args);
 	}
 
-	@Bean
-	public MultipartResolver multipartResolver() {
-		CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
-		return multipartResolver;
-	}
-
 }

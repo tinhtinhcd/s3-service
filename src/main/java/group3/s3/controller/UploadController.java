@@ -32,15 +32,16 @@ public class UploadController {
     }
 
     @PostMapping(value = "/uploadImage")
-    public ResponseEntity<Object> createPost(@RequestParam @Valid MultipartFile file, HttpRequest request) {
-        //        String medias = s3Service.uploadFile(file);
-        //        return new ResponseEntity<>(medias, HttpStatus.OK);
+    public ResponseEntity<Object> createPost(@RequestParam(required = false) MultipartFile file) {
+
         String error = fileValidator.validate(file);
         if (error != null && error.length() > 0) {
             return new ResponseEntity<>(ResponseError.builder().error(error).build(), HttpStatus.UNSUPPORTED_MEDIA_TYPE);
         }
-        String dummy = "https://elasticbeanstalk-us-west-1-425277212426.s3.amazonaws.com/group3-image/file260275551504320";
-        return new ResponseEntity<>(ResponseUrl.builder().url(dummy).build(), HttpStatus.OK);
+        String medias = s3Service.uploadFile(file);
+        return new ResponseEntity<>(ResponseUrl.builder().url(medias).build(), HttpStatus.OK);
+//        String dummy = "https://elasticbeanstalk-us-west-1-425277212426.s3.amazonaws.com/group3-image/file260275551504320";
+//        return new ResponseEntity<>(ResponseUrl.builder().url(dummy).build(), HttpStatus.OK);
     }
 
 }

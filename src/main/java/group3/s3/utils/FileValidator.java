@@ -1,5 +1,6 @@
 package group3.s3.utils;
 
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -15,13 +16,13 @@ public class FileValidator{
     public String validate(MultipartFile target) {
 
         if (target== null || target.getSize() == 0) {
-            error = ("files missing.file ");
+            return  "missing file";
         }
 
         String mimeType = target.getContentType();
-        String type = mimeType.split("/")[0];
+        String type[] = mimeType.split("/");
 
-        if (!types.contains(type)){
+        if (!types.contains(type[0]) && !types.contains(type[1])){
             error = ("fileType mismatch " + target.getName());
         }
 
