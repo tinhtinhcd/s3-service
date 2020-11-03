@@ -29,16 +29,12 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MultipartException.class)
     public ResponseEntity<ResponseError> handleMultipartException(Exception ex) {
-        Throwable se = ex.getCause().getCause();
         if(ex instanceof MaxUploadSizeExceededException){
             String message = messageSource.getMessage(
                     "file.maxsize",
                     new Object[]{"File uploaded ", size},
                     LocaleContextHolder.getLocale());
             return new ResponseEntity<>(ResponseError.builder().error(message).build(), HttpStatus.PAYLOAD_TOO_LARGE);
-        }
-        else if (se instanceof SizeLimitExceededException){
-            return new ResponseEntity<>(ResponseError.builder().error(se.getMessage()).build(), HttpStatus.PAYLOAD_TOO_LARGE);
         }
         return new ResponseEntity<>(ResponseError.builder().error(ex.getMessage()).build(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
