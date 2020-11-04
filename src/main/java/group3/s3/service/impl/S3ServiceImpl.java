@@ -66,8 +66,15 @@ public class S3ServiceImpl implements S3Service {
         String name = file.getName();
         if(name.contains("/"))
             name = name.substring(name.lastIndexOf('/'), name.length());
-        if (name.contains("."))
-            name = name.substring(0,name.indexOf('.'));
-        return  name + System.nanoTime();
+        if (name.contains(".")){
+            String[] s = name.split(".");
+            name = s[0];
+            name += System.nanoTime();
+            name += s[1];
+        }else {
+            name += System.nanoTime();
+        }
+
+        return  name;
     }
 }

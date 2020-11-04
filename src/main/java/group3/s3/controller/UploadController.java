@@ -44,4 +44,9 @@ public class UploadController {
 //        return new ResponseEntity<>(ResponseUrl.builder().url(dummy).build(), HttpStatus.OK);
     }
 
+    @GetMapping(value = "/check")
+    public ResponseEntity<Object> check(){
+        return ResponseEntity.ok("upload service running");
+    }
+
 }
